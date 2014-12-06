@@ -1,0 +1,11 @@
+/UTXOPool.class
+/Block.class
+/BlockChain$BlockNode.class
+/BlockChain.class
+/BlockHandler.class
+/ByteArrayWrapper.class
+/Transaction$Input.class
+/Transaction$Output.class
+/Transaction.class
+/TransactionPool.class
+/UTXO.class

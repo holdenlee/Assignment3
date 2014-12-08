@@ -62,6 +62,8 @@ public class BlockChain {
 	  ArrayList<Transaction> txs = genesisBlock.getTransactions();
 	  UTXOPool uPool = new UTXOPool();
 	  
+	  txs.add(genesisBlock.getCoinbase());
+	  
 	  int index = 0;
 	  
 	  for(Transaction tx : txs) {
@@ -142,11 +144,12 @@ public class BlockChain {
 	   if (myHeight <= maxHeight - CUT_OFF_AGE) {
 		   return false;
 	   }
-//	   for (Transaction tx : parentNode.b.getTransactions()) {
+//	   for (Transaction tx : b.getTransactions()) {
 //		   if (!txh.isValidTx(tx)) {
 //			   return false;
 //		   }		   
 //	   }
+	   
 	   ArrayList<Transaction> btxArray = b.getTransactions();
 	   Transaction[] btxs = new Transaction[btxArray.size()];
 	   btxs = btxArray.toArray(btxs);

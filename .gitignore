@@ -10,3 +10,8 @@
 /TransactionPool.class
 /UTXO.class
 /Test.class
+/TxHandler$HeuristicSearch.class
+/TxHandler$TxHandlerState.class
+/TxHandler$TxSearch.class
+/TxHandler$TxWrapper.class
+/TxHandler.class

@@ -14,7 +14,7 @@ public class Test {
 			System.out.println(i);
 		}
 		
-		byte[] ar = {1,0,0,0,0,0,0,0,0,0};
+		byte ar[] = new byte[32];
 		PRGen pr = new PRGen(ar);
 		RSAKeyPair rk = new RSAKeyPair(pr, 3);
 		RSAKeyPair rk2 = new RSAKeyPair(pr,5);

@@ -163,7 +163,14 @@ public class BlockChain {
 		ArrayList<Transaction> btxArray = b.getTransactions();
 		Transaction[] btxs = new Transaction[btxArray.size()];
 		btxs = btxArray.toArray(btxs);
+		
+		for (int i=0;i<btxArray.size();i++) {
+			btxs[i].finalize(); //This is needed!
+			//System.out.println(btxs[i].toString());
+		}
+		
 		Transaction[] validBtxs = txh.handleTxs(btxs);
+		
 		UTXOPool up = txh.getUTXOPool();
 		if (validBtxs.length < btxs.length) {
 			return false;

@@ -315,4 +315,12 @@ public class Transaction {
       }
       return hash;
    }
+   
+   public String toString() {
+	   String s = new String("");
+	   for (int i = 0; i < hash.length; i++) {
+		   s+=hash[i];
+	   }
+	   return s;
+   }
 }

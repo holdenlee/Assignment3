@@ -26,10 +26,6 @@ public class BlockHandler {
       Transaction[] rTxs = handler.handleTxs(txs);
       for (int i = 0; i < rTxs.length; i++)
          current.addTransaction(rTxs[i]);
-<<<<<<< HEAD
-=======
-
->>>>>>> 2524364fbfd986e57c4cde2a9e5a56737eb15a20
       current.finalize();
       if (blockChain.addBlock(current))
          return current;

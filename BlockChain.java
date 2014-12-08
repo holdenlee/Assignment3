@@ -124,14 +124,15 @@ public class BlockChain {
 	}
 
 	private void removeAtHeight(int h) {
-		if (h<0) {
+		if (h<=0) {
 			return;
 		}
 		HashSet<BlockNode> bns = nodesAtHeight.get(h);
-		if (bns != null)
+		if (bns != null) {
 			for (BlockNode bn : bns) {
 				allRecentNodes.remove(bn.b.getHash());
 			}
+		}
 		nodesAtHeight.remove(h);
 	}
 
@@ -145,6 +146,9 @@ public class BlockChain {
 	 */
 	public boolean addBlock(Block b) {
 		byte[] parentHash = b.getPrevBlockHash();
+		if (parentHash == null) {
+			return false;
+		}
 		BlockNode parentNode = allRecentNodes.get(parentHash);
 		if (parentNode == null) {
 			return false;

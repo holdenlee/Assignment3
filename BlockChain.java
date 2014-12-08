@@ -158,6 +158,7 @@ public class BlockChain {
 	   if (validBtxs.length < btxs.length) {
 		   return false;
 	   }
+	   up.addUTXO(new UTXO(b.getCoinbase().getHash(), 0), b.getCoinbase().getOutput(0));
 	   BlockNode bn = new BlockNode(b, parentNode, up);
 	   addToMultiMap(myHeight, bn, nodesAtHeight);
 	   allRecentNodes.put(b.getHash(), bn);

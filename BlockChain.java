@@ -164,7 +164,7 @@ public class BlockChain {
 	   allRecentNodes.put(b.getHash(), bn);
 	   if (myHeight > maxHeight) {
 		   maxHeight++;
-		   removeAtHeight(maxHeight - CUT_OFF_AGE);//off by 1?
+		   removeAtHeight(maxHeight - CUT_OFF_AGE - 1);//off by 1?
 		   highestNode = bn;
 	   } 
 	   return true;

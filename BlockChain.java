@@ -15,6 +15,8 @@ public class BlockChain {
    private BlockNode highestNode;
    private int maxHeight;
 
+   private TransactionPool tPool;
+   
    public static <A,B> void addToMultiMap(A x, B y, HashMap<A, HashSet<B>> h) {
 	   HashSet<B> s = h.get(x);
 	   if (s== null) {
@@ -79,6 +81,7 @@ public class BlockChain {
       this.allRecentNodes = new HashMap<byte[], BlockNode>();
       this.allRecentNodes.put(genesisBlock.getHash(), genBlockNode);
       this.highestNode = genBlockNode;
+      this.tPool = new TransactionPool();
    }
 
    /* Get the maximum height block
@@ -105,7 +108,7 @@ public class BlockChain {
    /* Get the transaction pool to mine a new block
     */
    public TransactionPool getTransactionPool() {
-      // IMPLEMENT THIS
+      return tPool;
    }
    
    private void removeAtHeight(int h) {
@@ -113,9 +116,10 @@ public class BlockChain {
 		   return;
 	   }
 	   HashSet<BlockNode> bns = nodesAtHeight.get(h);
-	   for (BlockNode bn : bns) {
-		   allRecentNodes.remove(bn.b.getHash());
-	   }
+	   if (bns != null)
+		   for (BlockNode bn : bns) {
+			   allRecentNodes.remove(bn.b.getHash());
+		   }
 	   nodesAtHeight.remove(h);
    }
 
@@ -165,6 +169,6 @@ public class BlockChain {
    /* Add a transaction in transaction pool
     */
    public void addTransaction(Transaction tx) {
-      // IMPLEMENT THIS
+      tPool.addTransaction(tx);
    }
 }

@@ -16,7 +16,7 @@ public class Transaction {
             prevTxHash = null;
          else
             prevTxHash = Arrays.copyOf(prevHash, prevHash.length);
-         outputIndex = index;
+         	outputIndex = index;
       }
       public void addSignature(byte[] sig) {
          if (sig == null)

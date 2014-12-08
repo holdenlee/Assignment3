@@ -26,7 +26,7 @@ public class BlockHandler {
       Transaction[] rTxs = handler.handleTxs(txs);
       for (int i = 0; i < rTxs.length; i++)
          current.addTransaction(rTxs[i]);
-
+      current.finalize();
       if (blockChain.addBlock(current))
          return current;
       else

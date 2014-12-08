@@ -8,6 +8,7 @@ import java.util.HashSet;
  */
 
 public class BlockChain {
+
 	public static final int CUT_OFF_AGE = 10;
 
 	private HashMap<Integer, HashSet<BlockNode>> nodesAtHeight;
@@ -24,7 +25,7 @@ public class BlockChain {
 		}
 		s.add(y);
 		h.put(x,s);
-		//does this mutate h? yes.
+		//does this mutate h?
 	}
 
 	// all information required in handling a block in block chain
@@ -62,6 +63,8 @@ public class BlockChain {
 		ArrayList<Transaction> txs = genesisBlock.getTransactions();
 		UTXOPool uPool = new UTXOPool();
 
+		txs.add(genesisBlock.getCoinbase());
+
 		int index = 0;
 
 		for(Transaction tx : txs) {
@@ -76,14 +79,21 @@ public class BlockChain {
 
 		this.nodesAtHeight = new HashMap<Integer, HashSet<BlockNode>>();
 		addToMultiMap(1,genBlockNode,nodesAtHeight);
-		//this.nodesAtHeight.put(0, new HashSet<BlockNode>());
-		//this.nodesAtHeight.get(0).add(genBlockNode);
 		this.maxHeight = 1;
 		this.allRecentNodes = new HashMap<byte[], BlockNode>();
 		this.allRecentNodes.put(genesisBlock.getHash(), genBlockNode);
-		
+
 		this.highestNode = genBlockNode;
 		this.tPool = new TransactionPool();
+		//      
+		//      this.nodesAtHeight = new HashMap<Integer, HashSet<BlockNode>>();
+		//      this.nodesAtHeight.put(0, new HashSet<BlockNode>());
+		//      this.nodesAtHeight.get(0).add(genBlockNode);
+		//      this.maxHeight = 0;
+		//      this.allRecentNodes = new HashMap<byte[], BlockNode>();
+		//      this.allRecentNodes.put(genesisBlock.getHash(), genBlockNode);
+		//      this.highestNode = genBlockNode;
+		//      this.tPool = new TransactionPool();
 	}
 
 	/* Get the maximum height block
@@ -134,7 +144,6 @@ public class BlockChain {
 	 * Return true of block is successfully added
 	 */
 	public boolean addBlock(Block b) {
-		//get parent hash
 		byte[] parentHash = b.getPrevBlockHash();
 		BlockNode parentNode = allRecentNodes.get(parentHash);
 		if (parentNode == null) {
@@ -145,11 +154,12 @@ public class BlockChain {
 		if (myHeight <= maxHeight - CUT_OFF_AGE) {
 			return false;
 		}
-		//	   for (Transaction tx : parentNode.b.getTransactions()) {
+		//	   for (Transaction tx : b.getTransactions()) {
 		//		   if (!txh.isValidTx(tx)) {
 		//			   return false;
 		//		   }		   
 		//	   }
+
 		ArrayList<Transaction> btxArray = b.getTransactions();
 		Transaction[] btxs = new Transaction[btxArray.size()];
 		btxs = btxArray.toArray(btxs);
@@ -158,12 +168,13 @@ public class BlockChain {
 		if (validBtxs.length < btxs.length) {
 			return false;
 		}
+		up.addUTXO(new UTXO(b.getCoinbase().getHash(), 0), b.getCoinbase().getOutput(0));
 		BlockNode bn = new BlockNode(b, parentNode, up);
 		addToMultiMap(myHeight, bn, nodesAtHeight);
 		allRecentNodes.put(b.getHash(), bn);
 		if (myHeight > maxHeight) {
 			maxHeight++;
-			removeAtHeight(maxHeight - CUT_OFF_AGE);//off by 1?
+			removeAtHeight(maxHeight - CUT_OFF_AGE - 1);//off by 1?
 			highestNode = bn;
 		} 
 		return true;

@@ -26,6 +26,10 @@ public class BlockHandler {
       Transaction[] rTxs = handler.handleTxs(txs);
       for (int i = 0; i < rTxs.length; i++)
          current.addTransaction(rTxs[i]);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2524364fbfd986e57c4cde2a9e5a56737eb15a20
       current.finalize();
       if (blockChain.addBlock(current))
          return current;
@@ -36,5 +40,29 @@ public class BlockHandler {
    // process a transaction
    public void processTx(Transaction tx) {
       blockChain.addTransaction(tx);
+   }
+   
+   public static void main(String[] args) {
+	   // Build Genesis Block
+	   byte zeros[] = new byte[32];
+	   
+	   RSAKeyPair genKey = new RSAKeyPair(new PRGen(zeros), 2048);
+	   Block genesisBlock = new Block(zeros, genKey.getPublicKey());
+	   genesisBlock.finalize();
+	   BlockChain chain = new BlockChain(genesisBlock);
+	   BlockHandler bHandler = new BlockHandler(chain);
+	   
+	   Transaction tx = new Transaction();
+	   tx.addInput(genesisBlock.getCoinbase().getHash(), 0);
+	   tx.addOutput(5, genKey.getPublicKey());
+	   tx.addSignature(genKey.getPrivateKey().sign(tx.getRawDataToSign(0)), 0);
+	   
+	   Block validBlock = new Block(genesisBlock.getHash(), genKey.getPublicKey());
+	   validBlock.addTransaction(tx);
+	   
+	   validBlock.finalize();
+	   
+	   if(bHandler.processBlock(validBlock)) System.out.println("Yay!");
+	   else System.out.println("Boo!");
    }
 }
